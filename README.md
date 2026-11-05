@@ -1,145 +1,338 @@
-# NutriFit AI: An Intelligent Machine Learning-Based Food Nutrition Analysis and Personalized Diet Recommendation System
+<div align="center">
 
-[![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.14-blue.svg)](https://www.python.org/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.36%2B-FF4B4B.svg)](https://streamlit.io/)
-[![Scikit-Learn](https://img.shields.io/badge/scikit--learn-ML%20Engine-F7931E.svg)](https://scikit-learn.org/)
-[![Database](https://img.shields.io/badge/Database-PostgreSQL%20%2F%20SQLite-336791.svg)](https://www.sqlalchemy.org/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+# 🥗 NutriFit AI
+### **Smart Food Nutrition Analyzer & Continuous Personalized Diet Recommendation System**
+
+[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-nutrifit--ai--diet.streamlit.app-00E676?style=for-the-badge&logo=streamlit)](https://nutrifit-ai-diet.streamlit.app)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/Akshay-Notfound/NutriFit-AI)
+[![Python Version](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.14-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+
+[![Streamlit Cloud](https://img.shields.io/badge/Streamlit-1.36%2B-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Scikit-Learn](https://img.shields.io/badge/scikit--learn-ML%20Engine-F7931E?style=flat-square&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
+[![Database](https://img.shields.io/badge/Database-PostgreSQL%20%2F%20SQLite%20ORM-336791?style=flat-square&logo=postgresql&logoColor=white)](https://www.sqlalchemy.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-00E676.svg?style=flat-square)](#)
+
+<p align="center">
+  <a href="#-executive-summary--the-core-breakthrough"><strong>Explore Core Innovation</strong></a> •
+  <a href="#-live-web-demo"><strong>Live Demo</strong></a> •
+  <a href="#-system-architecture"><strong>Architecture</strong></a> •
+  <a href="#-the-machine-learning-trio"><strong>ML Models</strong></a> •
+  <a href="#-indian-food-intelligence"><strong>Indian Nutrition</strong></a> •
+  <a href="#-getting-started"><strong>Quickstart</strong></a>
+</p>
 
 ---
 
-## 🌟 Executive Overview & Core Innovation
+</div>
 
-Most calorie trackers are merely passive static calculators. **NutriFit AI** takes personal health technology to the next level: it is an **AI-powered Food Nutrition Analyzer and Personalized Diet Recommendation System** that evaluates what a person eats in real time, understands its physiological impact, and **continuously recalculates what they should eat next** based on their unique biometric profile and fitness goals.
+## 🌟 Executive Summary & The Core Breakthrough
 
-### 💡 The Breakthrough: Continuous Dynamic Adaptation
-> Instead of recommending a rigid diet once in the morning, **NutriFit AI continuously adapts its recommendations to real-world human behavior**.
->
-> If a user consumes a packet of potato chips (270 kcal, 17g fat) or chocolate (135 kcal, 15g carbs, 8g fat), the system **does not** condemn the snack or demand extreme starvation. Instead, it computes the exact macronutrient footprint, recalculates the remaining daily allowance, and recommends wholesome, high-fiber, protein-dense options (e.g. Yellow Moong Dal, Roti, Cucumber Salad, Roasted Chana) to counterbalance the remaining meals.
+Traditional fitness and calorie-tracking mobile apps are merely **passive calculators**: you log what you eat, they deduct calories, and they stop there. If you eat a cookie or a packet of chips, traditional apps simply flag a red bar or tell you to starve for the rest of the day.
+
+**NutriFit AI revolutionizes this paradigm.** It is an intelligent, machine learning-powered nutrition science platform that:
+1. **Analyzes what a user consumes in real time** across both raw foods and packaged branded snacks.
+2. **Evaluates the deep nutritional impact** beyond simple calories (protein, dietary fiber, saturated fat, sodium, and added sugars).
+3. **Continuously Adapts Dynamic Recommendations**: Instead of enforcing rigid once-a-day meal plans, NutriFit AI recalculates the user's remaining nutritional budget after every single snack or meal and dynamically recalibrates subsequent meals to naturally restore macronutrient balance.
+
+---
+
+### 🆚 Traditional Calorie Trackers vs. NutriFit AI
+
+| Feature | Legacy Calorie Trackers (MyFitnessPal, HealthifyMe, etc.) | 🥗 NutriFit AI (Our Platform) |
+|---|---|---|
+| **Recommendation Engine** | Static; recommends a rigid plan once and cannot adapt | **Dynamic & Continuous**; recalculates subsequent meals after every snack |
+| **Snack Handling** | Flags red bars or tells you to skip dinner | Recommends clean counterbalances (high-fiber dal, whole grains, salads) |
+| **Healthy Alternatives** | Manual search or none | **KNN-Powered Smart Alternative Finder** (finds lower sugar/fat substitutes) |
+| **Goal Compatibility** | Simple daily calorie progress bar | **Random Forest Classifier** predicting food-goal compatibility |
+| **Nutritional Grouping** | Flat categories | **K-Means Unsupervised Clustering** ($k=6$ nutritional archetypes) |
+| **Indian Food Intelligence** | Poor coverage of regional thalis / branded snacks | **Native ICMR-NIN Tables** (Roti, Dal, Paneer, Makhana, Chana, Idli, Poha, etc.) |
+| **Barcode & OCR** | Often behind expensive paywalls | **Built-in Open Food Facts API & Label OCR Parser** |
+| **Dietary Reports** | Basic daily summary | **Clinical PDF Report Generator (`fpdf2`)** with WHO compliance audit |
+
+---
+
+## 🚀 Live Web Demo
+
+Experience the live application deployed on Streamlit Community Cloud:
+
+👉 **[https://nutrifit-ai-diet.streamlit.app](https://nutrifit-ai-diet.streamlit.app)**
 
 ---
 
 ## 🏗️ System Architecture
 
+NutriFit AI employs a **Hybrid Machine Learning + Deterministic Nutrition Science Architecture**:
+
 ```mermaid
 flowchart TD
-    User["User Biometrics (Age, Height, Weight, Sex, Activity, Goal)"] --> Engine["Nutrition Science Engine"]
-    FoodLog["Food Consumption Log (Breakfast, Lunch, Snacks, Dinner)"] --> FoodAnalyzer["Food Nutrition Analyzer"]
+    User["👤 User Biometric Profile\n(Age, Height, Weight, Sex, Activity, Goal)"] --> Engine["🔬 Deterministic Nutrition Engine"]
+    FoodLog["📖 Food Diary Consumption\n(Breakfast, Lunch, Snacks, Dinner)"] --> FoodAnalyzer["🔍 Food Nutrition Analyzer\n(29,208 Unified Food Records)"]
     
-    subgraph "Deterministic Science Engine"
-        Engine --> BMR["Mifflin-St Jeor BMR"]
-        Engine --> TDEE["TDEE & Activity Multipliers"]
-        Engine --> Targets["Calibrated Calorie & Macro Limits"]
+    subgraph "Deterministic Science Layer"
+        Engine --> BMR["Mifflin-St Jeor BMR Equation"]
+        Engine --> TDEE["TDEE with Physical Activity Multipliers"]
+        Engine --> Targets["Calibrated Calorie, Protein, Fiber & Sugar Limits"]
     end
 
     subgraph "Hybrid Machine Learning Layer"
-        FoodAnalyzer --> KNN["Model 1: KNN (Healthier Food Alternatives)"]
-        FoodAnalyzer --> RF["Model 2: Random Forest (Food-Goal Compatibility)"]
-        FoodAnalyzer --> KMeans["Model 3: K-Means (Nutritional Clustering)"]
+        FoodAnalyzer --> KNN["Model 1: KNN Recommender\n(Healthier Food Alternatives)"]
+        FoodAnalyzer --> RF["Model 2: Random Forest\n(Food-Goal Compatibility: 99.78% Acc)"]
+        FoodAnalyzer --> KMeans["Model 3: K-Means\n(Nutritional Archetype Clustering)"]
     end
 
-    Targets --> Balance["Calorie & Nutritional Gap Analysis"]
+    Targets --> Balance["⚖️ Calorie & Macro Gap Engine"]
     FoodLog --> Balance
     
-    KNN --> RecEngine["Personalized Recommendation Engine"]
+    KNN --> RecEngine["🧠 Personalized Recommendation Engine"]
     RF --> RecEngine
     KMeans --> RecEngine
     Balance --> RecEngine
 
-    RecEngine --> Dynamic["Continuous Dynamic Meal Balancer"]
-    Dynamic --> UI["Streamlit Interactive Dashboard (Multi-Page)"]
+    RecEngine --> Dynamic["🍱 Continuous Dynamic Meal Recalibration"]
+    Dynamic --> UI["💻 Streamlit Multipage Glassmorphic Dashboard"]
 ```
 
 ---
 
-## 🤖 Machine Learning Model Architecture & Evaluation
+## 🔬 Deterministic Nutrition Science Engine
 
-NutriFit AI employs a **Hybrid Machine Learning + Rule-Based Recommendation Architecture**:
+Before applying machine learning, the foundation of NutriFit AI relies on deterministic clinical nutrition science:
 
-| Model | Purpose | Features / Methodology | Performance / Metric |
-|---|---|---|---|
-| **KNN (k-Nearest Neighbors)** | Healthier Food Alternatives & Smart Swaps | Cosine metric on standardized vector `[calories, protein, carbs, fat, fiber, sugar, sodium]` | Sub-millisecond similarity queries across 29,208 foods |
-| **K-Means Clustering** | Nutritional Grouping & Food Archetypes | $k=6$ clusters (High-Protein, Fiber-Dense, Healthy Fats, Low-Calorie Produce, Sweets, Balanced) | **Silhouette Score: 0.4135** on 29,208 foods |
-| **Random Forest Classifier** | Goal Suitability Compatibility Classification | 100 Estimators on `[age, bmi, activity_level, goal, calories, protein, carbs, fat, fiber, sugar, sodium]` | **Accuracy: 99.78%**, **Macro F1: 0.9971** on test set |
+### 1. Body Mass Index (BMI) & Screening
+$$\text{BMI} = \frac{\text{Weight (kg)}}{(\text{Height (m)})^2}$$
+- **Underweight**: $< 18.5$
+- **Normal Range**: $18.5 \le \text{BMI} < 25.0$
+- **Overweight**: $25.0 \le \text{BMI} < 30.0$
+- **Obese**: $\ge 30.0$
+- *Includes exact healthy weight range calculation for the user's height.*
+
+### 2. Basal Metabolic Rate (BMR) — Mifflin-St Jeor Equation
+Estimated energy expenditure at complete physiological rest:
+- **Male**: $\text{BMR} = 10 \times W + 6.25 \times H - 5 \times A + 5$
+- **Female**: $\text{BMR} = 10 \times W + 6.25 \times H - 5 \times A - 161$
+*(where $W$ is weight in kg, $H$ is height in cm, and $A$ is age in years)*
+
+### 3. Total Daily Energy Expenditure (TDEE) & Goal Targets
+$$\text{TDEE} = \text{BMR} \times \text{ActivityFactor}$$
+
+| Activity Level | Multiplier | Typical Routine |
+|---|---|---|
+| **Sedentary** | `1.200` | Desk job, minimal walking or exercise |
+| **Lightly Active** | `1.375` | Light exercise / sports 1–3 days/week |
+| **Moderately Active** | `1.550` | Moderate exercise / training 3–5 days/week |
+| **Very Active** | `1.725` | Intense exercise / athletics 6–7 days/week |
+| **Extra Active** | `1.900` | Heavy daily physical labor or training 2x/day |
+
+- **Weight Loss Target**: $\text{TDEE} - 450\text{ kcal}$ (safe, sustainable fat-loss deficit)
+- **Maintenance Target**: $\text{TDEE}$
+- **Weight Gain / Hypertrophy Target**: $\text{TDEE} + 400\text{ kcal}$ (lean surplus)
+- **Anti-Starvation Floor**: Minimum safety threshold of $\ge 1200\text{ kcal/day}$.
+
+### 4. WHO Evidence-Based Dietary Guardrails
+- **Dietary Fiber**: $\ge 25\text{g – }30\text{g / day}$ (promotes gut microbiome, regulates LDL & glycemic index)
+- **Added Sugar Limit**: $< 5\%\text{ – }10\%$ of daily energy intake ($< 25\text{g – }35\text{g}$)
+- **Sodium Ceiling**: $< 2000\text{mg / day}$ (cardiovascular risk prevention)
+- **Daily Water Intake**: $\approx 35\text{ ml / kg body weight}$
 
 ---
 
-## 📊 Database Design (PostgreSQL / SQLite ORM)
+## 🤖 The Machine Learning Trio
 
-Configured for out-of-the-box local operation via SQLite (`sqlite:///nutrifit.db`) or enterprise PostgreSQL via `.env` (`DATABASE_URL`).
+NutriFit AI combines three specialized models to handle recommendation, classification, and clustering:
 
-```mermaid
-erDiagram
-    USERS ||--|| USER_PROFILES : has
-    USERS ||--o{ FOOD_LOGS : records
-    USERS ||--o{ WEIGHT_HISTORY : tracks
-    USERS ||--o{ DIET_PLAN : receives
-    USERS ||--o{ RECOMMENDATIONS : receives
-    FOOD_ITEMS ||--|| FOOD_NUTRITION : contains
-    FOOD_ITEMS ||--o{ FOOD_LOGS : consumed
-    FOOD_ITEMS ||--o{ DIET_PLAN_ITEMS : selected
-    DIET_PLAN ||--|{ DIET_PLAN_ITEMS : contains
 ```
+                            ┌──────────────────────────────────────────────┐
+                            │           NutriFit AI ML Models              │
+                            └──────────────────────┬───────────────────────┘
+                                                   │
+        ┌──────────────────────────────────────────┼────────────────────────────────────────┐
+        ▼                                          ▼                                        ▼
+┌──────────────────────────────┐    ┌──────────────────────────────┐    ┌──────────────────────────────┐
+│       Model 1: KNN           │    │    Model 2: Random Forest    │    │      Model 3: K-Means        │
+├──────────────────────────────┤    ├──────────────────────────────┤    ├──────────────────────────────┤
+│ • Task: Healthier Food Swaps │    │ • Task: Goal Compatibility   │    │ • Task: Nutritional Clusters │
+│ • Metric: Cosine Similarity  │    │ • Accuracy: 99.78%           │    │ • Clusters: k = 6            │
+│ • Features: 7-Dim Normalized │    │ • Macro F1-Score: 0.9971     │    │ • Silhouette Score: 0.4135   │
+│ • Database: 29,208 Foods     │    │ • 100 Decision Trees         │    │ • Food Archetype Profiling   │
+└──────────────────────────────┘    └──────────────────────────────┘    └──────────────────────────────┘
+```
+
+### Model 1: k-Nearest Neighbors (KNN) Food Recommender
+- **Standardized Feature Space**: `[calories, protein, carbohydrates, fat, fiber, sugar, sodium]` normalized via `StandardScaler`.
+- **Inference Strategy**: Computes nearest cosine neighbors and filters for candidates with superior nutritional attributes (higher protein/fiber, reduced sugar/saturated fat).
+- **Curated Indian Healthier Swaps**:
+  * **Lay's Potato Chips / Kurkure** $\rightarrow$ **Roasted Chana**, **Roasted Makhana**, or **Moong Sprouts Salad**
+  * **Cadbury Milk Chocolate** $\rightarrow$ **Unsweetened Cocoa Greek Yogurt Bowl** or **Fresh Fruit Bowl**
+  * **Carbonated Soft Drink** $\rightarrow$ **Unsweetened Lemon Water (Nimbu Pani)** or **Tender Coconut Water**
+  * **Deep Fried Samosa** $\rightarrow$ **Roasted Makhana** or **Besan Chilla**
+
+### Model 2: Random Forest Goal-Compatibility Classifier
+- **Features**: `[age, bmi, activity_level, fitness_goal, calories, protein, carbs, fat, fiber, sugar, sodium]`
+- **Predicted Classes**:
+  1. `Fits your daily nutrition goals` ✅
+  2. `Fits in moderation` ⚠️
+  3. `Consider a more nutrient-dense alternative` 🛑
+- **Evaluation Benchmark**:
+
+```
+                                            Precision    Recall    F1-Score   Support
+Fits your daily nutrition goals                  1.00      1.00        1.00      1846
+Fits in moderation                               1.00      1.00        1.00      1148
+Consider a more nutrient-dense alternative       1.00      1.00        1.00       606
+
+Overall Accuracy:                                                      99.78%     3600
+Macro Average F1:                                                      0.9971     3600
+```
+
+### Model 3: K-Means Nutritional Clustering
+- **Clusters ($k=6$)**:
+  * `Cluster 0`: *Low-Calorie & Hydrating Produce* (11,437 foods)
+  * `Cluster 1`: *Fiber & Nutrient-Dense Grains / Legumes* (5,871 foods)
+  * `Cluster 2`: *Calorie-Dense Healthy Fats & Nuts* (2,059 foods)
+  * `Cluster 3`: *High-Protein & Lean Fuel* (6,260 foods)
+  * `Cluster 4`: *High-Protein Specialized Fuel*
+  * `Cluster 5`: *High-Sugar & Confectionery Treats* (3,580 foods)
+- **Silhouette Benchmark**: **`0.4135`** on 29,208 unified foods.
 
 ---
 
-## 🇮🇳 Indian Food Intelligence & Nutrition Composition
+## 🇮🇳 Indian Food Intelligence & Cultural Dietetics
 
-NutriFit AI integrates authentic **ICMR-NIN (Indian Council of Medical Research - National Institute of Nutrition)** Food Composition Tables combined with **USDA Comprehensive Foods** and **Open Food Facts API**:
-- **Traditional Staples:** Moong Dal Tadka, Toor Dal, Chana Dal, Dal Makhani, Rajma Masala, Chole, Whole Wheat Roti, Bajra Roti, Jowar Roti, Steamed Rice, Brown Rice, Jeera Rice, Khichdi, Idli, Plain & Masala Dosa, Sambar, Coconut Chutney, Poha, Upma, Sprouted Moong Salad.
-- **Dairy & Proteins:** Fresh Paneer (Raw, Tikka, Bhurji), Palak Paneer, Curd / Dahi, Spiced Chaas (Buttermilk), Sweet Lassi, Boiled Eggs, Egg Bhurji, Chicken Tikka, Fish Curry.
-- **Smart Snack Substitutes:** Roasted Chana (Bengal gram), Roasted Makhana (Foxnuts), Unsweetened Cocoa Greek Yogurt Bowl, Fresh Fruit & Yogurt, Fresh Tender Coconut Water, Unsweetened Lemon Water (Nimbu Pani).
-- **Packaged Snacks Analyzed:** Lay's India's Magic Masala, Kurkure Masala Munch, Cadbury Dairy Milk, Nestlé KitKat, Parle-G Biscuits, Maggi 2-Minute Noodles, Haldiram's Aloo Bhujia, Coca-Cola.
+NutriFit AI directly solves the blind spot of Western diet apps by natively understanding Indian meal combinations:
 
----
-
-## 🚀 Getting Started
-
-### 1. Clone & Set Up Python Environment
-```bash
-git clone <repo-url>
-cd Diet_Planner
-python -m venv venv
-venv\Scripts\activate      # Windows
-# source venv/bin/activate  # macOS / Linux
 ```
-
-### 2. Install Dependencies
-```bash
-pip install -r requirements.txt
+                    ┌────────────────────────────────────────────────────────┐
+                    │              Authentic Indian Staples Crated           │
+                    └───────────────────────────┬────────────────────────────┘
+                                                │
+    ┌───────────────────────┬───────────────────┴───────────────────┬───────────────────────┐
+    ▼                       ▼                                       ▼                       ▼
+┌──────────────────┐    ┌──────────────────┐    ┌───────────────────────┐    ┌───────────────────┐
+│ Grains & Breads  │    │ Dals & Legumes   │    │ Dairy & Proteins      │    │ Regional Breakfast│
+├──────────────────┤    ├──────────────────┤    ├───────────────────────┤    ├───────────────────┤
+│ • Whole Wheat    │    │ • Yellow Moong   │    │ • Fresh Paneer Raw    │    │ • Poha w/ Peanuts │
+│   Roti / Chapati │    │   Dal Tadka      │    │ • Paneer Tikka /      │    │ • Vegetable Upma  │
+│ • Bajra Roti     │    │ • Toor / Arhar   │    │   Bhurji              │    │ • Idli + Sambar   │
+│ • Jowar Roti     │    │ • Chana Dal      │    │ • Palak Paneer        │    │ • Plain & Masala  │
+│ • Steamed Rice   │    │ • Rajma Masala   │    │ • Spiced Chaas        │    │   Dosa            │
+│ • Brown Rice     │    │ • Chole Masala   │    │ • Plain Curd / Dahi   │    │ • Besan Chilla    │
+│ • Moong Khichdi  │    │ • Kala Chana     │    │ • Boiled Eggs         │    │ • Sprouts Chaat   │
+│ • Plain Paratha  │    │ • Moong Sprouts  │    │ • Chicken Tikka       │    │ • Roasted Makhana │
+└──────────────────┘    └──────────────────┘    └───────────────────────┘    └───────────────────┘
 ```
-
-### 3. Launch the Application
-```bash
-streamlit run Home.py
-```
-*Open your browser at `http://localhost:8501` to explore NutriFit AI!*
 
 ---
 
 ## 📱 Application Modules & Pages
 
-1. **Home (`Home.py`):** Interactive obsidian dark dashboard with circular calorie gauge, weight trend curve, triple macro rings (Protein, Carbs, Fat), essential nutrients RDA bar chart, dynamic feedback, and today's meal diary summary.
-2. **User Profile (`pages/01_Profile.py`):** Biometric configuration, BMI healthy weight range calculator, Mifflin-St Jeor BMR calculator, TDEE activity multipliers, dietary preferences, and allergies.
-3. **Food Nutrition Analyzer (`pages/02_Food_Analyzer.py`):** Search across 29,208 foods, portion scaling customizer, Open Food Facts live Barcode Scanner, and Nutrition Label OCR parser.
-4. **Food Diary (`pages/03_Food_Diary.py`):** Breakfast, Lunch, Snacks, Dinner consumption log with delete capability and real-time remaining macro allowance progress.
-5. **AI Recommendations (`pages/04_AI_Recommendations.py`):** KNN healthier alternatives with side-by-side radar comparison, Random Forest goal suitability predictor, and K-Means cluster explorer.
-6. **Diet Planner (`pages/05_Diet_Planner.py`):** Daily & 7-day weekly Indian meal plans with automatic dynamic recalibration for logged food.
-7. **Progress Analytics (`pages/06_Progress.py`):** Weight history tracking, spline trajectory curve, linear regression trend estimation (kg/week & 30-day projection).
-8. **Clinical Reports (`pages/07_Reports.py`):** Downloadable PDF reports (via `fpdf2`), CSV export, and WHO dietary guideline compliance audit.
+The application is structured into **8 modular pages** matching modern healthcare interface guidelines:
+
+| Page | File | Core Functionality |
+|---|---|---|
+| **Dashboard** | `Home.py` | Circular SVG/Plotly calorie gauge, weight trend curve, triple macro rings (Protein, Carbs, Fat), essential nutrients RDA bar chart, dynamic feedback, and today's meal diary summary. |
+| **01 Profile** | `pages/01_Profile.py` | Biometric configuration, live BMI classification with healthy weight range, Mifflin-St Jeor BMR calculator, TDEE physical activity multipliers, dietary preferences, and allergies. |
+| **02 Food Analyzer** | `pages/02_Food_Analyzer.py` | Real-time search across 29,208 foods, portion scaling customizer, Open Food Facts live Barcode Scanner, and Nutrition Label OCR text parser. |
+| **03 Food Diary** | `pages/03_Food_Diary.py` | Categorized consumption log (Breakfast, Lunch, Snacks, Dinner), item deletion, and real-time remaining macro allowance progress bars. |
+| **04 AI Recommendations** | `pages/04_AI_Recommendations.py` | KNN healthier alternatives with side-by-side radar comparison, Random Forest goal suitability predictor, and K-Means cluster browser. |
+| **05 Diet Planner** | `pages/05_Diet_Planner.py` | Daily & 7-day weekly Indian meal plans with automatic dynamic recalibration for logged food. |
+| **06 Progress** | `pages/06_Progress.py` | Weight history tracking, spline trajectory curve, linear regression trend estimation (kg/week & 30-day projection). |
+| **07 Reports** | `pages/07_Reports.py` | Downloadable PDF reports (via `fpdf2`), CSV export, and WHO dietary guideline compliance audit. |
 
 ---
 
-## ⚕️ Responsible Nutrition Principles
+## 📊 Database Schema (SQLAlchemy ORM)
 
-NutriFit AI is engineered with rigorous clinical boundaries:
-- **Adult Target Population:** Designed for healthy adults aged 18+.
-- **No Medical Claims:** Explicitly flags that BMR, TDEE, and BMI are statistical screening estimates, not medical prescriptions.
-- **WHO Guidelines Adherence:** Promotes dietary adequacy, variety, minimum 25g daily fiber, and controlled thresholds for added sugar (<10% calories) and sodium (<2000mg).
-- **Anti-Starvation Safeguard:** Never advises caloric intake below 1200 kcal/day regardless of aggressive deficit requests.
+NutriFit AI runs out-of-the-box on local SQLite (`sqlite:///nutrifit.db`) and automatically seeds **29,208 foods** on initial boot. It seamlessly switches to PostgreSQL when `DATABASE_URL` is set in `.env` or Streamlit Secrets.
+
+```
+       ┌────────────────────────┐                   ┌────────────────────────┐
+       │         USERS          │                   │       FOOD_ITEMS       │
+       ├────────────────────────┤                   ├────────────────────────┤
+       │ user_id (PK)           │                   │ food_id (PK)           │
+       │ name, email            │                   │ name, category, brand  │
+       │ password_hash          │                   │ serving_size, unit     │
+       └───────────┬────────────┘                   └───────────┬────────────┘
+                   │                                            │
+       ┌───────────┼────────────────────────┐                   │
+       ▼           ▼                        ▼                   ▼
+┌──────────────┐ ┌────────────────┐ ┌───────────────┐ ┌──────────────────────┐
+│USER_PROFILES │ │  WEIGHT_HISTORY│ │   FOOD_LOGS   │ │    FOOD_NUTRITION    │
+├──────────────┤ ├────────────────┤ ├───────────────┤ ├──────────────────────┤
+│ user_id (FK) │ │ user_id (FK)   │ │ user_id (FK)  │ │ food_id (FK)         │
+│ age, sex     │ │ weight         │ │ food_id (FK)  │ │ calories, protein    │
+│ height,weight│ │ recorded_at    │ │ quantity, meal│ │ carbs, fat, fiber    │
+│ goal, activity│ └────────────────┘ └───────────────┘ │ sugar, sodium, etc.  │
+└──────────────┘                                      └──────────────────────┘
+```
+
+---
+
+## ⚡ Quickstart & Installation
+
+### 1. Clone Repository
+```bash
+git clone https://github.com/Akshay-Notfound/NutriFit-AI.git
+cd NutriFit-AI
+```
+
+### 2. Set Up Virtual Environment
+```bash
+# Windows
+python -m venv venv
+venv\Scripts\activate
+
+# macOS / Linux
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### 3. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Run Integration Tests
+```bash
+python test_pipeline.py
+```
+*(Executes 8 automated tests validating database seeding, nutrition calculations, KNN queries, Random Forest inference, dynamic balancing, and PDF generation).*
+
+### 5. Launch Application
+```bash
+streamlit run Home.py
+```
+Open **`http://localhost:8501`** in your browser.
+
+---
+
+## 🌐 Deploy to Streamlit Community Cloud
+
+NutriFit AI is pre-configured for **Streamlit Community Cloud** with `.streamlit/config.toml` dark theme settings:
+
+1. Fork or push this repository to your GitHub.
+2. Go to [share.streamlit.io](https://share.streamlit.io).
+3. Select your repository: `Akshay-Notfound/NutriFit-AI`.
+4. Set Branch: `main` and Main file path: `Home.py`.
+5. Click **Deploy!** 🎈
+
+---
+
+## ⚕️ Responsible Nutrition Principles & Safety Guardrails
+
+Because nutrition directly impacts physical well-being, NutriFit AI strictly enforces responsible clinical boundaries:
+- **Target Population**: Intended for healthy adults aged 18 and older.
+- **Screening, Not Medical Prescriptions**: Clearly notes that BMI, BMR, and TDEE are mathematical screening estimates, not clinical diagnoses.
+- **No Crash Starvation**: Safeguards prevent the daily calorie recommendation from ever falling below **1,200 kcal/day**, regardless of user-selected deficit targets.
+- **Empirical Trend Projections**: Historical weight trends are modeled via linear regression as statistical reference trajectories, clearly distinguished from medical guarantees.
 
 ---
 
 ## 📄 License
-This project is open-source under the MIT License.
+This project is open-source under the [MIT License](LICENSE).
 
+---
+
+<div align="center">
+  <sub>Engineered with Python, Scikit-learn, Nutrition Science & Streamlit by Akshay.</sub>
+</div>
