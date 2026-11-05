@@ -92,6 +92,36 @@ def render_disclaimer():
     </div>
     """
 
+def sanitize_pdf_text(text: str) -> str:
+    """Sanitizes strings to be strictly safe for standard FPDF Latin-1 fonts."""
+    if not text:
+        return ""
+    clean = str(text)
+    # Replace common markdown formatting
+    clean = clean.replace("**", "").replace("*", "").replace("`", "")
+    # Replace emojis and special symbols
+    replacements = {
+        "⚠️": "[!]",
+        "✅": "[OK]",
+        "🛑": "[ALERT]",
+        "🔥": "",
+        "🍗": "",
+        "🍞": "",
+        "🥑": "",
+        "🌾": "",
+        "🍬": "",
+        "🧂": "",
+        "💧": "",
+        "—": "-",
+        "–": "-",
+        "’": "'",
+        "“": '"',
+        "”": '"'
+    }
+    for orig, rep in replacements.items():
+        clean = clean.replace(orig, rep)
+    return clean.encode("latin-1", "replace").decode("latin-1")
+
 def generate_pdf_report(
     user_name: str,
     profile: Dict[str, Any],
@@ -101,84 +131,113 @@ def generate_pdf_report(
     output_path: str = "nutrifit_summary_report.pdf"
 ) -> str:
     """
-    Generates a PDF Nutrition & Diet Report using fpdf2.
+    Generates a PDF Nutrition & Diet Report using fpdf2 with modern geometry.
     """
     pdf = FPDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
+    epw = pdf.epw
 
     # Header
     pdf.set_font("Helvetica", "B", 18)
-    pdf.cell(0, 10, "NutriFit AI - Comprehensive Nutrition & Diet Report", ln=True, align="C")
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(epw, 10, "NutriFit AI - Comprehensive Nutrition & Diet Report", new_x="LMARGIN", new_y="NEXT", align="C")
     pdf.set_font("Helvetica", "I", 10)
-    pdf.cell(0, 6, f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M')} | Subject: {user_name}", ln=True, align="C")
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(epw, 6, sanitize_pdf_text(f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M')} | Subject: {user_name}"), new_x="LMARGIN", new_y="NEXT", align="C")
     pdf.ln(5)
 
-    # Profile & Biomarkers
+    # 1. Profile & Biomarkers
     pdf.set_font("Helvetica", "B", 13)
-    pdf.cell(0, 8, "1. User Profile & Metabolic Energetics", ln=True)
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(epw, 8, "1. User Profile & Metabolic Energetics", new_x="LMARGIN", new_y="NEXT")
     pdf.set_font("Helvetica", "", 10)
-    pdf.cell(95, 6, f"Age: {profile.get('age', 22)} years | Sex: {profile.get('sex', 'Male')}", ln=0)
-    pdf.cell(95, 6, f"Goal: {profile.get('goal', 'Maintenance')}", ln=1)
-    pdf.cell(95, 6, f"Height: {profile.get('height', 170)} cm | Weight: {profile.get('weight', 65)} kg", ln=0)
-    pdf.cell(95, 6, f"BMI: {targets.get('bmi', 22.5)} ({targets.get('bmi_category', 'Normal')})", ln=1)
-    pdf.cell(95, 6, f"Estimated BMR: {int(targets.get('bmr', 1600))} kcal/day", ln=0)
-    pdf.cell(95, 6, f"Estimated TDEE: {int(targets.get('tdee', 2200))} kcal/day", ln=1)
-    pdf.cell(0, 6, f"Target Daily Calorie Allowance: {int(targets.get('target_calories', 2000))} kcal", ln=1)
+    
+    half_w = epw / 2
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(half_w, 6, sanitize_pdf_text(f"Age: {profile.get('age', 22)} years | Sex: {profile.get('sex', 'Male')}"))
+    pdf.cell(half_w, 6, sanitize_pdf_text(f"Goal: {profile.get('goal', 'Maintenance')}"), new_x="LMARGIN", new_y="NEXT")
+
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(half_w, 6, sanitize_pdf_text(f"Height: {profile.get('height', 170)} cm | Weight: {profile.get('weight', 65)} kg"))
+    pdf.cell(half_w, 6, sanitize_pdf_text(f"BMI: {targets.get('bmi', 22.5)} ({targets.get('bmi_category', 'Normal')})"), new_x="LMARGIN", new_y="NEXT")
+
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(half_w, 6, sanitize_pdf_text(f"Estimated BMR: {int(targets.get('bmr', 1600))} kcal/day"))
+    pdf.cell(half_w, 6, sanitize_pdf_text(f"Estimated TDEE: {int(targets.get('tdee', 2200))} kcal/day"), new_x="LMARGIN", new_y="NEXT")
+
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(epw, 6, sanitize_pdf_text(f"Target Daily Calorie Allowance: {int(targets.get('target_calories', 2000))} kcal"), new_x="LMARGIN", new_y="NEXT")
     pdf.ln(5)
 
-    # Daily Nutrition Balance
+    # 2. Daily Nutrition Balance
     pdf.set_font("Helvetica", "B", 13)
-    pdf.cell(0, 8, "2. Daily Nutritional Tracking Summary", ln=True)
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(epw, 8, "2. Daily Nutritional Tracking Summary", new_x="LMARGIN", new_y="NEXT")
     consumed = balance.get('consumed', {})
     remaining = balance.get('remaining', {})
     pdf.set_font("Helvetica", "", 10)
-    pdf.cell(0, 6, f"Energy Intake: {int(consumed.get('calories', 0))} kcal consumed ({int(remaining.get('calories', 0))} kcal remaining)", ln=1)
-    pdf.cell(0, 6, f"Protein: {consumed.get('protein', 0):.1f}g consumed / {targets.get('target_protein_g', 100):.0f}g target", ln=1)
-    pdf.cell(0, 6, f"Carbohydrates: {consumed.get('carbs', 0):.1f}g consumed / {targets.get('target_carbs_g', 250):.0f}g target", ln=1)
-    pdf.cell(0, 6, f"Total Fat: {consumed.get('fat', 0):.1f}g consumed / {targets.get('target_fat_g', 60):.0f}g target", ln=1)
-    pdf.cell(0, 6, f"Dietary Fiber: {consumed.get('fiber', 0):.1f}g consumed (WHO minimum: 25g)", ln=1)
-    pdf.cell(0, 6, f"Added Sugar: {consumed.get('sugar', 0):.1f}g (Recommended ceiling: < {targets.get('sugar_limit_g', 35):.0f}g)", ln=1)
-    pdf.cell(0, 6, f"Sodium: {consumed.get('sodium', 0):.0f}mg (Recommended ceiling: < 2000mg)", ln=1)
+
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(epw, 6, sanitize_pdf_text(f"Energy Intake: {int(consumed.get('calories', 0))} kcal consumed ({int(remaining.get('calories', 0))} kcal remaining)"), new_x="LMARGIN", new_y="NEXT")
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(epw, 6, sanitize_pdf_text(f"Protein: {consumed.get('protein', 0):.1f}g consumed / {targets.get('target_protein_g', 100):.0f}g target"), new_x="LMARGIN", new_y="NEXT")
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(epw, 6, sanitize_pdf_text(f"Carbohydrates: {consumed.get('carbs', 0):.1f}g consumed / {targets.get('target_carbs_g', 250):.0f}g target"), new_x="LMARGIN", new_y="NEXT")
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(epw, 6, sanitize_pdf_text(f"Total Fat: {consumed.get('fat', 0):.1f}g consumed / {targets.get('target_fat_g', 60):.0f}g target"), new_x="LMARGIN", new_y="NEXT")
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(epw, 6, sanitize_pdf_text(f"Dietary Fiber: {consumed.get('fiber', 0):.1f}g consumed (WHO minimum: 25g)"), new_x="LMARGIN", new_y="NEXT")
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(epw, 6, sanitize_pdf_text(f"Added Sugar: {consumed.get('sugar', 0):.1f}g (Recommended ceiling: < {targets.get('sugar_limit_g', 35):.0f}g)"), new_x="LMARGIN", new_y="NEXT")
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(epw, 6, sanitize_pdf_text(f"Sodium: {consumed.get('sodium', 0):.0f}mg (Recommended ceiling: < 2000mg)"), new_x="LMARGIN", new_y="NEXT")
     pdf.ln(5)
 
-    # Food Log Table
+    # 3. Food Log Table
     pdf.set_font("Helvetica", "B", 13)
-    pdf.cell(0, 8, "3. Consumed Food Log Details", ln=True)
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(epw, 8, "3. Consumed Food Log Details", new_x="LMARGIN", new_y="NEXT")
+    
+    col_w = [25, 75, 25, 25, 20, 20] # total = 190
+    headers = ["Meal", "Food Item", "Quantity", "Calories", "Protein", "Carbs"]
+    
     pdf.set_font("Helvetica", "B", 9)
-    pdf.cell(25, 6, "Meal Type", 1)
-    pdf.cell(75, 6, "Food Item", 1)
-    pdf.cell(25, 6, "Quantity", 1)
-    pdf.cell(25, 6, "Calories", 1)
-    pdf.cell(20, 6, "Protein", 1)
-    pdf.cell(20, 6, "Carbs", 1)
+    pdf.set_x(pdf.l_margin)
+    for w, h in zip(col_w, headers):
+        pdf.cell(w, 6, h, border=1)
     pdf.ln()
 
     pdf.set_font("Helvetica", "", 9)
     if not food_logs:
-        pdf.cell(190, 6, "No foods recorded today.", 1, ln=1, align="C")
+        pdf.set_x(pdf.l_margin)
+        pdf.cell(epw, 6, "No foods recorded today.", border=1, new_x="LMARGIN", new_y="NEXT", align="C")
     else:
         for item in food_logs:
-            pdf.cell(25, 6, str(item.get('meal_type', 'Snack'))[:12], 1)
-            pdf.cell(75, 6, str(item.get('food_name', 'Item'))[:36], 1)
-            pdf.cell(25, 6, f"{item.get('quantity', 100):.0f}g", 1)
-            pdf.cell(25, 6, f"{item.get('calories', 0):.0f} kcal", 1)
-            pdf.cell(20, 6, f"{item.get('protein', 0):.1f}g", 1)
-            pdf.cell(20, 6, f"{item.get('carbs', 0):.1f}g", 1)
+            pdf.set_x(pdf.l_margin)
+            pdf.cell(col_w[0], 6, sanitize_pdf_text(str(item.get('meal_type', 'Snack'))[:12]), border=1)
+            pdf.cell(col_w[1], 6, sanitize_pdf_text(str(item.get('food_name', 'Item'))[:36]), border=1)
+            pdf.cell(col_w[2], 6, f"{item.get('quantity', 100):.0f}g", border=1)
+            pdf.cell(col_w[3], 6, f"{item.get('calories', 0):.0f} kcal", border=1)
+            pdf.cell(col_w[4], 6, f"{item.get('protein', 0):.1f}g", border=1)
+            pdf.cell(col_w[5], 6, f"{item.get('carbs', 0):.1f}g", border=1)
             pdf.ln()
 
-    pdf.ln(6)
-    # AI Clinical Insights
+    pdf.ln(5)
+    # 4. AI Clinical Insights
     pdf.set_font("Helvetica", "B", 13)
-    pdf.cell(0, 8, "4. AI Dietitian Insights & Next Steps", ln=True)
+    pdf.set_x(pdf.l_margin)
+    pdf.cell(epw, 8, "4. AI Dietitian Insights & Next Steps", new_x="LMARGIN", new_y="NEXT")
     pdf.set_font("Helvetica", "", 10)
     for insight in balance.get('insights', []):
-        clean_text = insight.replace("**", "").replace("⚠️", "[!]")
-        pdf.multi_cell(0, 6, f"- {clean_text}")
+        clean_text = sanitize_pdf_text(insight)
+        pdf.set_x(pdf.l_margin)
+        pdf.multi_cell(w=epw, h=6, text=f"- {clean_text}")
 
-    pdf.ln(8)
+    pdf.ln(6)
     pdf.set_font("Helvetica", "I", 8)
-    pdf.multi_cell(0, 5, "Disclaimer: NutriFit AI is an automated machine learning and nutrition science analytical system. It does not replace advice from certified clinical nutritionists or healthcare professionals.")
+    pdf.set_x(pdf.l_margin)
+    pdf.multi_cell(w=epw, h=5, text="Disclaimer: NutriFit AI is an automated machine learning and nutrition science analytical system. It does not replace advice from certified clinical nutritionists or healthcare professionals.")
 
     pdf.output(output_path)
     return output_path
